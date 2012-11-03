@@ -32,10 +32,9 @@ class pyGoogleTrendsCsvDownloader(object):
         All immutable system variables are also defined here
         '''
         
-        self.cat = ['0-67']
-        self.geo = ['US-WY-764']
-        
-        # The amount of time (in secs) that the downloader should wait before downloading consecutive pages from the same spider. This can be used to throttle the crawling speed to avoid hitting servers too hard. It is further randomized.
+        # The amount of time (in secs) that the script should wait before making a request.
+        # This can be used to throttle the downloading speed to avoid hitting servers too hard.
+        # It is further randomized.
         self.download_delay = 0.25
         
         self.service = "trendspro"
@@ -43,6 +42,7 @@ class pyGoogleTrendsCsvDownloader(object):
         self.url_download = self.url_service + "trendsReport?"
         
         self.login_params = {}
+        # These headers are necessary, otherwise Google will flag the request at your account level
         self.headers = [('User-Agent', 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:12.0) Gecko/20100101 Firefox/12.0'),
                         ("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"),
                         ("Accept-Language", "en-gb,en;q=0.5"),
@@ -95,14 +95,15 @@ class pyGoogleTrendsCsvDownloader(object):
         params = urllib.urlencode(self.login_params)
         self.opener.open(self.url_authenticate, params)
         
-    def get_csv(self, **kwargs):
+    def get_csv(self, throttle=False, **kwargs):
         '''
         Download CSV reports
         '''
         
         # Randomized download delay
-        r = random.uniform(0.5 * self.download_delay, 1.5 * self.download_delay)
-        time.sleep(r)
+        if throttle:
+            r = random.uniform(0.5 * self.download_delay, 1.5 * self.download_delay)
+            time.sleep(r)
         
         params = {
             'export': 1
