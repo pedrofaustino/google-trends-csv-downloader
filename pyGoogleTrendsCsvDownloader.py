@@ -85,7 +85,11 @@ class pyGoogleTrendsCsvDownloader(object):
             xmlTree = etree.fromstring(data, parser=html.HTMLParser(recover=True, remove_comments=True))
             
             for input in find_inputs(xmlTree):
-                self.login_params[input.get("name")] = input.get("value")
+                name = input.get('name')
+                if name:
+                    name = name.encode('utf8')
+                    value = input.get('value', '').encode('utf8')
+                    self.login_params[name] = value
         except:
             print("Exception while parsing: %s\n" % traceback.format_exc())    
         
