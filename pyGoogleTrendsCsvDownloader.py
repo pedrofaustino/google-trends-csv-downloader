@@ -63,9 +63,11 @@ class pyGoogleTrendsCsvDownloader(object):
         
         # Make sure we get CSV results in English
         ck = Cookie(version=0, name='I4SUserLocale', value='en_US', port=None, port_specified=False, domain='www.google.com', domain_specified=False,domain_initial_dot=False, path='/trends', path_specified=True, secure=False, expires=None, discard=False, comment=None, comment_url=None, rest=None)
-        
+        ck_pref = Cookie(version=0, name='PREF', value='', port=None, port_specified=False, domain='www.google.com', domain_specified=False,domain_initial_dot=False, path='/trends', path_specified=True, secure=False, expires=None, discard=False, comment=None, comment_url=None, rest=None) 
+
         self.cj = CookieJar()                            
         self.cj.set_cookie(ck)
+        self.cj.set_cookie(ck_pref)
         self.opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(self.cj))
         self.opener.addheaders = self.headers
         
