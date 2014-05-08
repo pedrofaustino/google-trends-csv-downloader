@@ -112,10 +112,15 @@ class pyGoogleTrendsCsvDownloader(object):
             time.sleep(r)
         
         params = {
-            'export': 1
+            'export': '1'
         }
         params.update(kwargs)
         params = urllib.urlencode(params)
+        # If params = {'a': '1', 'b': 'with spaces /and +'}
+        # the result would be 'a=1&b=with+spaces+%2Fand+%2B' and
+        # we still need to replace '+' by its percent encoded version
+        # For more info see http://bugs.python.org/issue13866
+        params = params.replace('+', '%20')
         
         r = self.opener.open(self.url_download + params)
         
