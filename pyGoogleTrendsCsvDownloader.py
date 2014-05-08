@@ -131,6 +131,6 @@ class pyGoogleTrendsCsvDownloader(object):
         else:
             data = r.read()
         
-        myFile = open('trends_%s.csv' % '_'.join(['%s-%s' % (key, value) for (key, value) in kwargs.items()]), 'w')
+        myFile = open('trends_%s.csv' % '_'.join(['%s-%s' % (key, ''.join([char for char in value if char.isalnum()])) for (key, value) in kwargs.items()]), 'w')
         myFile.write(data)
         myFile.close()
