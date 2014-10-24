@@ -28,3 +28,6 @@ pip-log.txt
 
 #VirtualEnv
 venv
+
+#Trend data
+*.csv
